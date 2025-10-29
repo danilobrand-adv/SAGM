@@ -33,6 +33,11 @@
     <div id="sidebar" class="w-40 bg-law-navy flex-shrink-0 flex flex-col items-center py-8 space-y-6 shadow-lg h-screen sticky top-0">
         
        
+    <button data-target-id="app-home" data-url="home.html//" id="btn-home" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM7 7h10v2H7V7zm10 4H7v2h10v-2zm0 4H7v2h10v-2z"/></svg>
+            <span class="text-xs font-semibold">HOME</span>
+        </button>
+
 
         <button data-target-id="app-leis" data-url="https://danilobrand-adv.github.io/legisla-omunicipal//" id="btn-leis" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM7 7h10v2H7V7zm10 4H7v2h10v-2zm0 4H7v2h10v-2z"/></svg>
@@ -54,6 +59,10 @@
     </div>
 
     <main class="flex-grow p-4">
+
+         <div id="app-home" class="app-container w-full h-full hidden">
+            <iframe data-url="home.html" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+        </div>
         
         
         <div id="app-leis" class="app-container w-full h-full hidden">
@@ -75,7 +84,7 @@
     <script>
         const appContainers = document.querySelectorAll('.app-container');
         const buttons = document.querySelectorAll('.btn-app');
-        const defaultAppId = 'app-contratos'; // Define a aplicação padrão (Contratos)
+        const defaultAppId = 'app-home'; // Define a aplicação padrão (Contratos)
 
         function loadIframe(iframe) {
             const dataUrl = iframe.getAttribute('data-url');
@@ -120,7 +129,7 @@
         // LÓGICA DE INICIALIZAÇÃO E PRÉ-CARREGAMENTO
         // -----------------------------------------------------------
         document.addEventListener('DOMContentLoaded', () => {
-             const defaultButton = document.getElementById('btn-sagm');
+             const defaultButton = document.getElementById('btn-home');
              
              // 1. Carrega a aplicação padrão (CONTRATOS) imediatamente
              if (defaultButton) {
