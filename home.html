@@ -2,95 +2,213 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Sistema de Apoio à Gestão Municipal (SAGM)</title>
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet" />
-    
+
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+
     <script>
-        tailwind.config = { 
+        tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'law-navy2': '#1F3F6D',
+                        primary: '#1F3F6D',
+                        secondary: '#244B80',
+                        accent: '#D9E8E3',
+                        surface: '#F5F7FA',
+                        borderSoft: '#E2E8F0'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
+                        serif: ['Merriweather', 'serif']
+                    },
+                    boxShadow: {
+                        soft: '0 10px 30px rgba(15, 23, 42, 0.06)',
+                        header: '0 4px 18px rgba(15, 23, 42, 0.08)'
                     }
-                },
-            },
-        };
-    </script>
-    
-    <style>
-        /* Ajuste fino para o iframe não mostrar barras de rolagem desnecessárias */
-        body {
-            /* Fundo branco (simulando a tela de conteúdo do dashboard) */
-            background-color: white; 
-            padding: 0;
-            margin: 0;
+                }
+            }
         }
-        /* Estilo para o título (Merriweather Bold) */
-        .page-title {
-            font-family: 'Merriweather', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #1F3F6D; /* law-navy2 */
+    </script>
+
+    <style>
+        body {
+            background:
+                linear-gradient(to bottom, #EEF3F8 0%, #F8FAFC 35%, #F8FAFC 100%);
+        }
+
+        .glass-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.92);
         }
     </style>
 </head>
-               
-<body class="p-0">
 
-    <div class="w-full mx-auto pb-8">
+<body class="font-sans text-slate-700 min-h-screen">
 
-        <div class="w-full h-40 flex items-center justify-center relative border-b-2 border-slate-200" 
-             style="background-color: #cce6df;"> 
-             <img src="https://i1.wp.com/goiana.pe.gov.br/wp-content/uploads/2025/07/LOGO-TOPO-SITE-PREFEITURA-GOIANA.png" 
-                 alt="Logo Prefeitura Goiana" 
-                 class="max-w-full max-h-36 h-auto" />
-             
-        </div>
-             </div>
-                                      
+    <!-- HEADER -->
+    <header class="relative overflow-hidden bg-white border-b border-slate-200 shadow-header">
 
-        <div class="max-w-4xl mx-auto px-6 mt-12">
-            
-              <h2 class="page-title text-center mb-10">
-                Orientação aos Gestores Municipais
-            </h2>
-            
-            <div class="text-gray-700 text-justify leading-relaxed space-y-6">
-                
-                <p>As ferramentas de controle e as orientações normativas constituem elementos essenciais para a administração pública municipal, 
-                    pois proporcionam diretrizes claras e consistentes para a condução das atividades administrativas. Por meio de decretos, 
-                    instruções normativas, checklists e outros instrumentos, é possível estabelecer padrões de fiscalização, planejamento e 
-                    execução que garantem a conformidade com a legislação vigente, fortalecem a transparência na aplicação dos recursos públicos 
-                    e promovem a eficiência na gestão administrativa, assegurando que as políticas públicas sejam implementadas de forma 
-                    responsável e alinhada aos princípios constitucionais da moralidade, eficiência e publicidade.
-                </p>
-                
-                <p>Para ampliar o acesso a esses instrumentos e apoiar a atuação dos gestores, foi desenvolvido o SISTEMA DE APOIO À GESTÃO MUNICIPAL (SAGM), 
-                uma plataforma que reúne em um único ambiente, leis, decretos, instruções normativas, checklists e demais documentos administrativos, oferecendo consulta 
-                prática e organizada, fortalecendo a padronização de procedimentos e a eficácia da gestão pública.
-                </p>
-                
-                <p>Além das ferramentas já disponíveis, estão em estudo a elaboração de novos instrumentos de apoio à gestão, entre os quais se destaca o 
-                    Formulário de Designação de Fiscal de Contratação – IN nº 002/2024, atualmente em fase de desenvolvimento. Essa ferramenta visa 
-                    padronizar e simplificar o processo de designação e acompanhamento dos fiscais de contratos administrativos. 
-                   </p>
+        <!-- Faixa superior -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
 
-                   <p>De forma mais ampla, essas iniciativas incluem também o estudo de soluções em formato digital, com o objetivo de facilitar a 
-                    acessibilidade, a consulta e a execução das tarefas administrativas. Tais ações buscam fortalecer ainda mais a eficiência, a 
-                    transparência e a padronização dos procedimentos, contribuindo para uma gestão pública municipal mais ágil, organizada e alinhada
-                    aos princípios constitucionais que regem a administração responsável.
-                   </p>
-                
+        <!-- Elemento decorativo -->
+        <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent opacity-40 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="h-40 flex items-center justify-between">
+
+                <!-- Logo -->
+                <div class="flex items-center gap-5">
+
+                    <div class="bg-white rounded-2xl p-3 shadow-soft border border-slate-100">
+                        <img 
+                            src="https://i1.wp.com/goiana.pe.gov.br/wp-content/uploads/2025/07/LOGO-TOPO-SITE-PREFEITURA-GOIANA.png"
+                            alt="Logo oficial da Prefeitura Municipal de Goiana"
+                            class="h-20 object-contain"
+                        />
+                    </div>
+
+                    <div class="hidden md:block">
+                        <p class="text-sm uppercase tracking-[0.25em] text-slate-400 font-semibold">
+                            Prefeitura Municipal de Goiana
+                        </p>
+
+                        <h1 class="font-serif text-3xl text-primary font-bold mt-1">
+                            SAGM
+                        </h1>
+
+                        <p class="text-slate-500 text-sm mt-1">
+                            Sistema de Apoio à Gestão Municipal
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Selo -->
+                <div class="hidden lg:flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                            Plataforma Institucional
+                        </p>
+
+                        <p class="text-sm font-semibold text-slate-700">
+                            Gestão • Controle • Transparência
+                        </p>
+                    </div>
+                </div>
+
             </div>
+
         </div>
 
-    </div>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <main class="relative max-w-6xl mx-auto px-6 py-16">
+
+        <!-- TÍTULO -->
+        <section class="text-center mb-14">
+
+            <div class="inline-flex items-center gap-2 bg-primary/5 border border-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                Sistema Institucional de Apoio à Gestão
+            </div>
+
+            <h2 class="font-serif text-5xl leading-tight text-primary font-bold max-w-4xl mx-auto">
+                Modernização, padronização e fortalecimento da gestão pública municipal
+            </h2>
+
+            <div class="w-32 h-1 bg-primary/20 rounded-full mx-auto mt-8"></div>
+
+        </section>
+
+        <!-- CARD PRINCIPAL -->
+        <section class="glass-card rounded-[2rem] shadow-soft border border-white/60 overflow-hidden">
+
+            <!-- Barra superior -->
+            <div class="h-2 bg-gradient-to-r from-primary via-secondary to-accent"></div>
+
+            <div class="grid lg:grid-cols-12">
+
+                <!-- Área lateral -->
+                <aside class="lg:col-span-4 bg-slate-50 border-r border-slate-200 p-10">
+
+                    <div class="sticky top-10">
+
+                        <div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                 class="w-8 h-8 text-white"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="1.8"
+                                      d="M9 17v-6h13v6M9 5v6h13V5M3 5h.01M3 12h.01M3 19h.01"/>
+                            </svg>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-primary leading-snug mb-5">
+                            Apoio técnico e fortalecimento institucional
+                        </h3>
+
+                        <p class="text-slate-600 leading-8">
+                            Plataforma desenvolvida para ampliar a eficiência administrativa,
+                            promover transparência e facilitar o acesso aos instrumentos
+                            de gestão e controle interno.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+                <!-- TEXTO -->
+                <div class="lg:col-span-8 p-10 lg:p-14">
+
+                    <div class="space-y-8 text-[1.03rem] leading-9 text-slate-700">
+
+                        <p>
+                            O Sistema de Apoio à Gestão Municipal (SAGM) foi desenvolvido com o objetivo de
+                            fortalecer a eficiência, a transparência e a padronização dos procedimentos
+                            administrativos no âmbito municipal.
+                        </p>
+
+                        <p>
+                            A plataforma reúne leis, decretos, instruções normativas, formulários,
+                            checklists e demais instrumentos de apoio à gestão, proporcionando acesso
+                            organizado às informações necessárias para a execução das atividades administrativas.
+                        </p>
+
+                        <p>
+                            O sistema também conta com ferramentas de acompanhamento e monitoramento,
+                            incluindo painel de acompanhamento das despesas de pessoal, auxiliando os gestores
+                            no controle administrativo, na tomada de decisões e no cumprimento das exigências legais
+                            e dos princípios constitucionais da administração pública.
+                        </p>
+
+                        <p>
+                            Além das funcionalidades já disponíveis, novas soluções digitais e instrumentos
+                            de apoio encontram-se em desenvolvimento, visando ampliar a modernização,
+                            a acessibilidade e a eficiência da gestão pública municipal.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 </html>
