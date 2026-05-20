@@ -28,110 +28,177 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-slate-100 flex p-0">
+<body class="min-h-screen bg-slate-100 font-[Inter] m-0">
 
-    <div id="sidebar" class="w-40 bg-law-navy flex-shrink-0 flex flex-col items-center py-8 space-y-6 shadow-lg h-screen sticky top-0">
+    <!-- ================= TELA DE LOGIN ================= -->
+    <div id="login-screen" class="flex min-h-screen items-center justify-center bg-law-navy">
+        <div class="bg-white p-10 rounded-2xl shadow-2xl w-96 flex flex-col items-center">
+            <!-- Ícone/Logo simples -->
+            <div class="w-16 h-16 bg-law-navy2 rounded-full flex items-center justify-center text-law-gold mb-4 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" /></svg>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-law-navy mb-1 text-center font-[Merriweather]">Acesso SAGM</h2>
+            <p class="text-sm text-slate-500 mb-8 text-center">Insira suas credenciais para continuar</p>
+            
+            <div class="w-full space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-law-navy2 mb-1">Usuário</label>
+                    <input type="text" id="username" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-law-gold focus:border-transparent transition" placeholder="admin">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-law-navy2 mb-1">Senha</label>
+                    <input type="password" id="password" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-law-gold focus:border-transparent transition" placeholder="••••••••">
+                </div>
+                
+                <p id="login-error" class="text-red-500 text-xs font-semibold hidden text-center mt-2">Usuário ou senha incorretos!</p>
+                
+                <button id="btn-login" class="w-full mt-6 bg-law-gold text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600 transition shadow-md">
+                    Entrar
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ================= FIM DA TELA DE LOGIN ================= -->
+
+
+    <!-- ================= DASHBOARD (Escondida até o login) ================= -->
+    <div id="dashboard-wrapper" class="hidden min-h-screen flex p-0">
         
-       
-    <button data-target-id="app-home" data-url="home.html//" id="btn-home" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM7 7h10v2H7V7zm10 4H7v2h10v-2zm0 4H7v2h10v-2z"/></svg>
-            <span class="text-xs font-semibold">HOME</span>
-        </button>
+        <div id="sidebar" class="w-40 bg-law-navy flex-shrink-0 flex flex-col items-center py-8 space-y-6 shadow-lg h-screen sticky top-0">
+            
+            <button data-target-id="app-home" data-url="home.html" id="btn-home" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM7 7h10v2H7V7zm10 4H7v2h10v-2zm0 4H7v2h10v-2z"/></svg>
+                <span class="text-xs font-semibold">HOME</span>
+            </button>
 
+            <button data-target-id="app-leis" data-url="https://danilobrand-adv.github.io/legisla-omunicipal/" id="btn-leis" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM7 7h10v2H7V7zm10 4H7v2h10v-2zm0 4H7v2h10v-2z"/></svg>
+                <span class="text-xs font-semibold">ACERVO DE LEIS</span>
+            </button>
+        
+            <button data-target-id="app-sagm-local" data-url="https://danilobrand-adv.github.io/FCON/" id="btn-outra-app" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l4.59-4.59L17 11l-6 6z"></path></svg>
+                <span class="text-xs font-semibold">FERRAMENTAS DE CONTROLE</span>
+            </button>
 
-        <button data-target-id="app-leis" data-url="https://danilobrand-adv.github.io/legisla-omunicipal//" id="btn-leis" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM7 7h10v2H7V7zm10 4H7v2h10v-2zm0 4H7v2h10v-2z"/></svg>
-            <span class="text-xs font-semibold">ACERVO DE LEIS</span>
-        </button>
+            <button data-target-id="app-contratos" data-url="https://danilobrand-adv.github.io/contratos/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
+                 <span class="text-xs font-semibold">FISCAL DE CONTRATO</span>
+            </button>
 
-    
-        <button data-target-id="app-sagm-local" data-url="https://danilobrand-adv.github.io/FCON/" id="btn-outra-app" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l4.59-4.59L17 11l-6 6z"></path></svg>
-            <span class="text-xs font-semibold">FERRAMENTAS DE CONTROLE</span>
-        </button>
+            <button data-target-id="app-folha_analitica" data-url="https://ccicontrolealfa.vercel.app/analiseservidoresporfundojson/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
+                 <span class="text-xs font-semibold">FOLHA ANALÍTICA</span>
+            </button>
 
-     <button data-target-id="app-contratos" data-url="https://danilobrand-adv.github.io/contratos/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
-             <span class="text-xs font-semibold">FISCAL DE CONTRATO</span>
-        </button>
+            <button data-target-id="app-folha_sintetica" data-url="https://danilobrand-adv.github.io/folhadepessoal/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
+                 <span class="text-xs font-semibold">FOLHA SINTÉTICA</span>
+            </button>
 
-           <button data-target-id="app-folha_analitica" data-url="https://ccicontrolealfa.vercel.app/analiseservidoresporfundojson/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
-             <span class="text-xs font-semibold">FOLHA ANALÍTICA</span>
-        </button>
+             <button data-target-id="app-folha_proventos" data-url="https://danilobrand-adv.github.io/proventos/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
+                 <span class="text-xs font-semibold">MONITORAMENTO PROVENTOS</span>
+            </button>
+        </div>
 
-        <button data-target-id="app-folha_sintetica" data-url="https://danilobrand-adv.github.io/folhadepessoal/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
-             <span class="text-xs font-semibold">FOLHA SINTÉTICA</span>
-        </button>
+        <main class="flex-grow p-4">
+             <div id="app-home" class="app-container w-full h-full hidden">
+                <iframe data-url="home.html" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
+                    
+            <div id="app-leis" class="app-container w-full h-full hidden">
+                <iframe data-url="https://danilobrand-adv.github.io/legisla-omunicipal/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
 
-         <button data-target-id="app-folha_proventos" data-url="https://danilobrand-adv.github.io/proventos/" id="btn-sagm" class="btn-app w-36 h-8 bg-law-navy2 text-slate-400 rounded-xl hover:bg-law-gold/90 hover:text-white transition flex items-center justify-center">
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-8l-2-2z"></path></svg>
-             <span class="text-xs font-semibold">MONITORAMENTO PROVENTOS</span>
-        </button>
+            <div id="app-sagm-local" class="app-container w-full h-full hidden">
+                <iframe data-url="https://danilobrand-adv.github.io/FCON/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
+            
+            <div id="app-contratos" class="app-container w-full h-full hidden">
+                <iframe data-url="https://danilobrand-adv.github.io/contratos/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
 
+            <div id="app-folha_analitica" class="app-container w-full h-full hidden">
+                <iframe data-url="https://ccicontrolealfa.vercel.app/analiseservidoresporfundojson/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
+
+             <div id="app-folha_sintetica" class="app-container w-full h-full hidden">
+                <iframe data-url="https://danilobrand-adv.github.io/folhadepessoal/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
+
+            <div id="app-folha_proventos" class="app-container w-full h-full hidden">
+                <iframe data-url="https://danilobrand-adv.github.io/proventos/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
+            </div>
+        </main>
     </div>
 
-    <main class="flex-grow p-4">
-
-         <div id="app-home" class="app-container w-full h-full hidden">
-            <iframe data-url="home.html" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-                
-        <div id="app-leis" class="app-container w-full h-full hidden">
-            <iframe data-url="https://danilobrand-adv.github.io/legisla-omunicipal//" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-
-        <div id="app-sagm-local" class="app-container w-full h-full hidden">
-            <iframe data-url="https://danilobrand-adv.github.io/FCON/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-        
-<div id="app-contratos" class="app-container w-full h-full hidden">
-            <iframe data-url="https://danilobrand-adv.github.io/contratos/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-
-        <div id="app-folha_analitica" class="app-container w-full h-full hidden">
-            <iframe data-url="https://ccicontrolealfa.vercel.app/analiseservidoresporfundojson/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-
-         <div id="app-folha_sintetica" class="app-container w-full h-full hidden">
-            <iframe data-url="https://danilobrand-adv.github.io/folhadepessoal/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-
-  <div id="app-folha_proventos" class="app-container w-full h-full hidden">
-            <iframe data-url="https://danilobrand-adv.github.io/proventos/" class="w-full h-full border-2 border-slate-300 rounded-xl shadow-xl" frameborder="0"></iframe>
-        </div>
-
-    </main>
-
     <script>
+        // ==========================================
+        // LÓGICA DE LOGIN
+        // ==========================================
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardWrapper = document.getElementById('dashboard-wrapper');
+        const btnLogin = document.getElementById('btn-login');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('login-error');
+
+        // Defina aqui a sua senha e usuário
+        const USUARIO_CORRETO = 'prefeitura';
+        const SENHA_CORRETA = '123456';
+
+        function realizarLogin() {
+            if (usernameInput.value === USUARIO_CORRETO && passwordInput.value === SENHA_CORRETA) {
+                // Sucesso: esconde login, mostra dashboard
+                loginScreen.classList.add('hidden');
+                dashboardWrapper.classList.remove('hidden');
+                
+                // Inicia o carregamento dos iframes apenas após o login!
+                iniciarSistema(); 
+            } else {
+                // Erro: mostra a mensagem
+                loginError.classList.remove('hidden');
+                passwordInput.value = ''; // Limpa a senha
+            }
+        }
+
+        // Clicar no botão entrar
+        btnLogin.addEventListener('click', realizarLogin);
+
+        // Apertar "Enter" no campo de senha também tenta logar
+        passwordInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                realizarLogin();
+            }
+        });
+
+
+        // ==========================================
+        // LÓGICA DO DASHBOARD (Iframes)
+        // ==========================================
         const appContainers = document.querySelectorAll('.app-container');
         const buttons = document.querySelectorAll('.btn-app');
-        const defaultAppId = 'app-home'; // Define a aplicação padrão (Contratos)
+        const defaultAppId = 'app-home'; // Aplicação padrão
 
         function loadIframe(iframe) {
             const dataUrl = iframe.getAttribute('data-url');
-            // Carrega o src apenas se o data-url existir e o src ainda não tiver sido definido
             if (dataUrl && !iframe.getAttribute('src')) {
                 iframe.setAttribute('src', dataUrl);
             }
         }
 
         function navigateToApp(appId, button) {
-            // 1. Oculta todos os contêineres de aplicação
-            appContainers.forEach(container => {
-                container.classList.add('hidden');
-            });
+            appContainers.forEach(container => container.classList.add('hidden'));
 
-            // 2. Mostra o contêiner alvo e carrega (se ainda não carregado)
             const targetContainer = document.getElementById(appId);
             if (targetContainer) {
                 targetContainer.classList.remove('hidden');
                 const iframe = targetContainer.querySelector('iframe');
-                loadIframe(iframe); // Chama a função de carregamento/cache
+                loadIframe(iframe); 
             }
 
-            // 3. Atualiza o estado visual do menu (ativo)
             buttons.forEach(btn => {
                 btn.classList.remove('active', 'bg-law-gold', 'text-white');
                 btn.classList.add('bg-law-navy2', 'text-slate-400');
@@ -140,7 +207,6 @@
             button.classList.remove('bg-law-navy2', 'text-slate-400');
         }
 
-        // Adiciona o evento de clique a todos os botões da aplicação
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const appId = button.getAttribute('data-target-id');
@@ -148,33 +214,26 @@
             });
         });
 
-        // -----------------------------------------------------------
-        // LÓGICA DE INICIALIZAÇÃO E PRÉ-CARREGAMENTO
-        // -----------------------------------------------------------
-        document.addEventListener('DOMContentLoaded', () => {
+        // Esta função agora só é chamada DEPOIS que o login dá certo
+        function iniciarSistema() {
              const defaultButton = document.getElementById('btn-home');
              
-             // 1. Carrega a aplicação padrão (CONTRATOS) imediatamente
+             // 1. Carrega a aplicação padrão
              if (defaultButton) {
                  navigateToApp(defaultAppId, defaultButton);
              }
              
-             // 2. PRÉ-CARREGAMENTO das outras aplicações após um pequeno delay.
-             // Isso permite que a aplicação padrão carregue primeiro, sem competir por recursos.
-             window.onload = function() {
-                 setTimeout(() => {
-                     appContainers.forEach(container => {
-                         const appId = container.id;
-                         // Pré-carrega APENAS se não for a aplicação padrão (que já está carregando)
-                         if (appId !== defaultAppId) {
-                             const iframe = container.querySelector('iframe');
-                             loadIframe(iframe);
-                             console.log(`Pré-carregando: ${appId}`);
-                         }
-                     });
-                 }, 500); // 500ms de delay para não atrasar o carregamento inicial da página.
-             }
-        });
+             // 2. Pré-carrega as outras
+             setTimeout(() => {
+                 appContainers.forEach(container => {
+                     const appId = container.id;
+                     if (appId !== defaultAppId) {
+                         const iframe = container.querySelector('iframe');
+                         loadIframe(iframe);
+                     }
+                 });
+             }, 500);
+        }
     </script>
 </body>
 </html>
