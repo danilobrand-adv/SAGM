@@ -1,214 +1,768 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SAGM — Sistema de Apoio à Gestão Municipal</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <title>Sistema de Apoio à Gestão Municipal (SAGM)</title>
+  :root {
+    --navy:    #0D1F3C;
+    --blue:    #163B68;
+    --mid:     #2458A0;
+    --steel:   #4A7AB5;
+    --mist:    #D6E4F5;
+    --silver:  #8A9BB0;
+    --pale:    #F0F5FB;
+    --white:   #FFFFFF;
+    --line:    rgba(255,255,255,0.10);
+    --line2:   rgba(22,59,104,0.10);
+  }
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  html { scroll-behavior: smooth; }
 
-    <!-- Fontes -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  body {
+    font-family: 'Sora', sans-serif;
+    background: #EDF2F9;
+    color: #2D3D52;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1F3F6D',
-                        secondary: '#244B80',
-                        accent: '#D9E8E3',
-                        surface: '#F5F7FA',
-                        borderSoft: '#E2E8F0'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif']
-                    },
-                    boxShadow: {
-                        soft: '0 10px 30px rgba(15, 23, 42, 0.06)',
-                        header: '0 4px 18px rgba(15, 23, 42, 0.08)'
-                    }
-                }
-            }
-        }
-    </script>
+  /* ── CANVAS DE FUNDO ── */
+  .bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(22,59,104,0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(13,31,60,0.12) 0%, transparent 50%),
+      linear-gradient(175deg, #E8EFF8 0%, #EDF2F9 50%, #E4EDF7 100%);
+    pointer-events: none;
+  }
 
-    <style>
-        body {
-            background:
-                linear-gradient(to bottom, #EEF3F8 0%, #F8FAFC 35%, #F8FAFC 100%);
-        }
+  /* Linhas de grade ultra-sutis */
+  .bg-canvas::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(22,59,104,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22,59,104,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
 
-        .glass-card {
-            backdrop-filter: blur(10px);
-            background: rgba(255,255,255,0.92);
-        }
-    </style>
+  /* ── PARTÍCULAS BRILHANTES ── */
+  .sparks {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .spark {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(100,160,230,0.55);
+    animation: sparkFloat linear infinite;
+  }
+
+  @keyframes sparkFloat {
+    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ══════════════════════════════
+     HEADER
+  ══════════════════════════════ */
+  header {
+    position: relative;
+    z-index: 10;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(22,59,104,0.12);
+  }
+
+  /* Linha de acento no topo */
+  header::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #163B68 0%, #2458A0 40%, #4A7AB5 70%, #A8C8F0 100%);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 88px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  /* Logo container */
+  .logo-box {
+    background: var(--white);
+    border: 1px solid var(--mist);
+    border-radius: 14px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(22,59,104,0.10);
+  }
+
+  .logo-box img {
+    height: 52px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .header-text .sup {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 4px;
+  }
+
+  .header-text h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .header-text .sub {
+    font-size: 12px;
+    color: var(--steel);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.70);
+    border: 1px solid rgba(22,59,104,0.12);
+    border-radius: 40px;
+    padding: 8px 18px 8px 14px;
+  }
+
+  .status-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  .status-dot::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(34,197,120,0.25);
+    animation: ping 2s ease-in-out infinite;
+  }
+
+  .status-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #22C578;
+  }
+
+  @keyframes ping {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50%       { transform: scale(1.6); opacity: 0; }
+  }
+
+  .status-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: 0.02em;
+  }
+
+  /* ══════════════════════════════
+     HERO
+  ══════════════════════════════ */
+  .hero {
+    padding: 80px 0 56px;
+    text-align: center;
+  }
+
+  /* Pílula de badge */
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(36,88,160,0.18);
+    border-radius: 40px;
+    padding: 6px 18px;
+    margin-bottom: 36px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mid);
+    opacity: 0.6;
+  }
+
+  .hero h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .hero h2 em {
+    font-style: normal;
+    color: var(--mid);
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Sublinhado de acento */
+  .hero h2 em::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--mist);
+    border-radius: 4px;
+    z-index: -1;
+  }
+
+  .hero-desc {
+    margin: 28px auto 0;
+    max-width: 600px;
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--silver);
+    font-weight: 300;
+  }
+
+  /* ══════════════════════════════
+     DIVISOR COM BRILHO
+  ══════════════════════════════ */
+  .divider-glow {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mist), transparent);
+    margin: 0;
+    overflow: visible;
+  }
+
+  .divider-glow::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 8px;
+    background: radial-gradient(ellipse, rgba(36,88,160,0.25), transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* ══════════════════════════════
+     PAINEL PRINCIPAL
+  ══════════════════════════════ */
+  main {
+    padding: 0 0 80px;
+  }
+
+  .main-panel {
+    background: rgba(255,255,255,0.62);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.80);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 24px 60px rgba(13,31,60,0.08),
+      0 4px 16px rgba(13,31,60,0.05);
+    position: relative;
+  }
+
+  /* Linha de acento topo */
+  .panel-accent {
+    height: 3px;
+    background: linear-gradient(90deg, #0D1F3C 0%, #163B68 30%, #2458A0 60%, #4A7AB5 85%, #A8C8F0 100%);
+  }
+
+  /* Brilho interno */
+  .main-panel::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: -60px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(100,160,230,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+
+  /* ── SIDEBAR ── */
+  .panel-sidebar {
+    border-right: 1px solid rgba(22,59,104,0.08);
+    background: rgba(13,31,60,0.03);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel-sidebar::before {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(36,88,160,0.08), transparent 70%);
+  }
+
+  /* Ícone flutuante */
+  .sidebar-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(13,31,60,0.22), 0 0 0 1px rgba(255,255,255,0.12) inset;
+    animation: floatIcon 6s ease-in-out infinite;
+  }
+
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-7px); }
+  }
+
+  /* Reflexo no ícone */
+  .sidebar-icon::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    width: 30px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    filter: blur(3px);
+  }
+
+  .sidebar-icon svg {
+    width: 32px;
+    height: 32px;
+    color: rgba(255,255,255,0.90);
+  }
+
+  .sidebar-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+    margin-bottom: 16px;
+  }
+
+  .sidebar-desc {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--silver);
+    font-weight: 300;
+  }
+
+  /* Mini cards */
+  .mini-cards {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mini-card {
+    background: rgba(255,255,255,0.80);
+    border: 1px solid rgba(22,59,104,0.08);
+    border-left: 3px solid var(--steel);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  .mini-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 4px;
+  }
+
+  .mini-card-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  /* ── CONTEÚDO ── */
+  .panel-content {
+    padding: 52px 56px;
+  }
+
+  .content-intro {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .content-intro::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--steel);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .content-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .content-text p {
+    font-size: 15.5px;
+    line-height: 1.90;
+    color: #3A4D62;
+    font-weight: 300;
+  }
+
+  /* Parágrafo destacado */
+  .content-text p.highlight {
+    color: var(--navy);
+    font-weight: 400;
+    font-size: 16.5px;
+  }
+
+  /* Separador entre parágrafos */
+  .content-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--mist), transparent);
+    margin: 4px 0;
+  }
+
+  /* ══════════════════════════════
+     RODAPÉ
+  ══════════════════════════════ */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(22,59,104,0.10);
+    background: rgba(255,255,255,0.40);
+    backdrop-filter: blur(12px);
+  }
+
+  .footer-inner {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    font-size: 12px;
+    color: var(--silver);
+    font-weight: 400;
+  }
+
+  .footer-left strong {
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+
+  .footer-right-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--steel);
+    opacity: 0.5;
+  }
+
+  /* ══════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════ */
+  @media (max-width: 860px) {
+    .panel-grid { grid-template-columns: 1fr; }
+    .panel-sidebar { border-right: none; border-bottom: 1px solid rgba(22,59,104,0.08); padding: 40px 28px; }
+    .panel-content { padding: 36px 28px; }
+    .header-inner { height: 76px; }
+    .header-text h1 { font-size: 22px; }
+    .status-badge { display: none; }
+    .hero { padding: 52px 0 40px; }
+    .hero h2 { font-size: 32px; }
+    .footer-inner { flex-direction: column; gap: 8px; height: auto; padding: 16px 0; text-align: center; }
+  }
+</style>
 </head>
+<body>
 
-<body class="font-sans text-slate-700 min-h-screen">
+<!-- FUNDO -->
+<div class="bg-canvas"></div>
 
-    <!-- HEADER -->
-    <header class="relative overflow-hidden bg-white border-b border-slate-200 shadow-header">
+<!-- PARTÍCULAS -->
+<div class="sparks" id="sparks"></div>
 
-        <!-- Faixa superior -->
-        <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="wrapper">
+    <div class="header-inner">
 
-        <!-- Elemento decorativo -->
-        <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent opacity-40 blur-3xl"></div>
+      <div class="header-left">
+        <div class="logo-box">
+          <img
+            src="https://i1.wp.com/goiana.pe.gov.br/wp-content/uploads/2025/07/LOGO-TOPO-SITE-PREFEITURA-GOIANA.png"
+            alt="Brasão da Prefeitura Municipal de Goiana"
+          />
+        </div>
+        <div class="header-text">
+          <p class="sup">Prefeitura Municipal de Goiana</p>
+          <h1>SAGM</h1>
+          <p class="sub">Sistema de Apoio à Gestão Municipal</p>
+        </div>
+      </div>
 
-        <div class="max-w-7xl mx-auto px-6">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span class="status-text">Plataforma ativa &nbsp;·&nbsp; Gestão · Controle · Transparência</span>
+      </div>
 
-            <div class="h-40 flex items-center justify-between">
+    </div>
+  </div>
+</header>
 
-                <!-- Logo -->
-                <div class="flex items-center gap-5">
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="wrapper">
 
-                    <div class="bg-white rounded-2xl p-3 shadow-soft border border-slate-100">
-                        <img 
-                            src="https://i1.wp.com/goiana.pe.gov.br/wp-content/uploads/2025/07/LOGO-TOPO-SITE-PREFEITURA-GOIANA.png"
-                            alt="Logo oficial da Prefeitura Municipal de Goiana"
-                            class="h-20 object-contain"
-                        />
-                    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Plataforma Institucional
+    </div>
 
-                    <div class="hidden md:block">
-                        <p class="text-sm uppercase tracking-[0.25em] text-slate-400 font-semibold">
-                            Prefeitura Municipal de Goiana
-                        </p>
+    <h2>
+      Modernização e <em>inteligência</em><br>
+      na gestão pública municipal
+    </h2>
 
-                        <h1 class="font-serif text-3xl text-primary font-bold mt-1">
-                            SAGM
-                        </h1>
+    <p class="hero-desc">
+      Plataforma institucional voltada ao fortalecimento do controle,
+      da eficiência administrativa e da padronização dos procedimentos municipais.
+    </p>
 
-                        <p class="text-slate-500 text-sm mt-1">
-                            Sistema de Apoio à Gestão Municipal
-                        </p>
-                    </div>
+  </div>
+</section>
 
-                </div>
+<div class="divider-glow"></div>
 
-                <!-- Selo -->
-                <div class="hidden lg:flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3">
-                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+<!-- ══ CONTEÚDO PRINCIPAL ══ -->
+<main>
+  <div class="wrapper" style="padding-top: 48px;">
 
-                    <div>
-                        <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
-                            Plataforma Institucional
-                        </p>
+    <div class="main-panel">
+      <div class="panel-accent"></div>
 
-                        <p class="text-sm font-semibold text-slate-700">
-                            Gestão • Controle • Transparência
-                        </p>
-                    </div>
-                </div>
+      <div class="panel-grid">
 
+        <!-- SIDEBAR -->
+        <aside class="panel-sidebar">
+
+          <div class="sidebar-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <path d="M14 17.5h7M17.5 14v7"/>
+            </svg>
+          </div>
+
+          <h3 class="sidebar-title">Gestão moderna<br>e integrada</h3>
+
+          <p class="sidebar-desc">
+            Solução institucional desenvolvida para ampliar o acesso às ferramentas
+            de controle, monitoramento e apoio técnico à administração pública municipal.
+          </p>
+
+          <div class="mini-cards">
+            <div class="mini-card">
+              <p class="mini-card-label">Monitoramento</p>
+              <p class="mini-card-value">Despesas de Pessoal</p>
             </div>
+            <div class="mini-card">
+              <p class="mini-card-label">Ferramentas</p>
+              <p class="mini-card-value">Checklists e Normativos</p>
+            </div>
+            <div class="mini-card">
+              <p class="mini-card-label">Referências</p>
+              <p class="mini-card-value">Leis e Instruções Normativas</p>
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- CONTEÚDO -->
+        <div class="panel-content">
+
+          <p class="content-intro">Sobre a plataforma</p>
+
+          <div class="content-text">
+
+            <p class="highlight">
+              O Sistema de Apoio à Gestão Municipal (SAGM) foi desenvolvido com o objetivo de
+              fortalecer a eficiência, a transparência e a padronização dos procedimentos
+              administrativos no âmbito municipal.
+            </p>
+
+            <div class="content-divider"></div>
+
+            <p>
+              A plataforma reúne leis, decretos, instruções normativas, formulários,
+              checklists e demais instrumentos de apoio à gestão, proporcionando acesso
+              organizado às informações necessárias para a execução das atividades administrativas.
+            </p>
+
+            <p>
+              O sistema também conta com ferramentas de acompanhamento e monitoramento,
+              incluindo painel de acompanhamento das despesas de pessoal, auxiliando os gestores
+              no controle administrativo, na tomada de decisões e no cumprimento das exigências legais
+              e dos princípios constitucionais da administração pública.
+            </p>
+
+            <div class="content-divider"></div>
+
+            <p>
+              Além das funcionalidades já disponíveis, novas soluções digitais e instrumentos
+              de apoio encontram-se em desenvolvimento, visando ampliar a modernização,
+              a acessibilidade e a eficiência da gestão pública municipal.
+            </p>
+
+          </div>
 
         </div>
 
-    </header>
+      </div>
+    </div>
 
-    <!-- CONTEÚDO -->
-    <main class="relative max-w-6xl mx-auto px-6 py-16">
+  </div>
+</main>
 
-        <!-- TÍTULO -->
-        <section class="text-center mb-14">
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="wrapper">
+    <div class="footer-inner">
+      <p class="footer-left">
+        <strong>SAGM</strong> &nbsp;·&nbsp; Sistema de Apoio à Gestão Municipal &nbsp;·&nbsp; Prefeitura de Goiana – PE
+      </p>
+      <div class="footer-right">
+        <div class="footer-right-dot"></div>
+        Controle Interno
+        <div class="footer-right-dot"></div>
+        Gestão Pública
+        <div class="footer-right-dot"></div>
+        Transparência
+      </div>
+    </div>
+  </div>
+</footer>
 
-            <div class="inline-flex items-center gap-2 bg-primary/5 border border-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                Sistema Institucional de Apoio à Gestão
-            </div>
-
-            <h2 class="font-serif text-5xl leading-tight text-primary font-bold max-w-4xl mx-auto">
-                Modernização, padronização e fortalecimento da gestão pública municipal
-            </h2>
-
-            <div class="w-32 h-1 bg-primary/20 rounded-full mx-auto mt-8"></div>
-
-        </section>
-
-        <!-- CARD PRINCIPAL -->
-        <section class="glass-card rounded-[2rem] shadow-soft border border-white/60 overflow-hidden">
-
-            <!-- Barra superior -->
-            <div class="h-2 bg-gradient-to-r from-primary via-secondary to-accent"></div>
-
-            <div class="grid lg:grid-cols-12">
-
-                <!-- Área lateral -->
-                <aside class="lg:col-span-4 bg-slate-50 border-r border-slate-200 p-10">
-
-                    <div class="sticky top-10">
-
-                        <div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg mb-8">
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                 class="w-8 h-8 text-white"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="1.8"
-                                      d="M9 17v-6h13v6M9 5v6h13V5M3 5h.01M3 12h.01M3 19h.01"/>
-                            </svg>
-                        </div>
-
-                        <h3 class="text-2xl font-bold text-primary leading-snug mb-5">
-                            Apoio técnico e fortalecimento institucional
-                        </h3>
-
-                        <p class="text-slate-600 leading-8">
-                            Plataforma desenvolvida para ampliar a eficiência administrativa,
-                            promover transparência e facilitar o acesso aos instrumentos
-                            de gestão e controle interno.
-                        </p>
-
-                    </div>
-
-                </aside>
-
-                <!-- TEXTO -->
-                <div class="lg:col-span-8 p-10 lg:p-14">
-
-                    <div class="space-y-8 text-[1.03rem] leading-9 text-slate-700">
-
-                        <p>
-                            O Sistema de Apoio à Gestão Municipal (SAGM) foi desenvolvido com o objetivo de
-                            fortalecer a eficiência, a transparência e a padronização dos procedimentos
-                            administrativos no âmbito municipal.
-                        </p>
-
-                        <p>
-                            A plataforma reúne leis, decretos, instruções normativas, formulários,
-                            checklists e demais instrumentos de apoio à gestão, proporcionando acesso
-                            organizado às informações necessárias para a execução das atividades administrativas.
-                        </p>
-
-                        <p>
-                            O sistema também conta com ferramentas de acompanhamento e monitoramento,
-                            incluindo painel de acompanhamento das despesas de pessoal, auxiliando os gestores
-                            no controle administrativo, na tomada de decisões e no cumprimento das exigências legais
-                            e dos princípios constitucionais da administração pública.
-                        </p>
-
-                        <p>
-                            Além das funcionalidades já disponíveis, novas soluções digitais e instrumentos
-                            de apoio encontram-se em desenvolvimento, visando ampliar a modernização,
-                            a acessibilidade e a eficiência da gestão pública municipal.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+<script>
+  // Partículas flutuantes (sparkles de brilho)
+  const container = document.getElementById('sparks');
+  const count = 22;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const size = Math.random() * 3 + 1.5;
+    const left = Math.random() * 100;
+    const dur  = Math.random() * 18 + 14;
+    const delay = Math.random() * -20;
+    s.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${left}%;
+      animation-duration: ${dur}s;
+      animation-delay: ${delay}s;
+      opacity: ${Math.random() * 0.35 + 0.1};
+    `;
+    container.appendChild(s);
+  }
+</script>
 
 </body>
 </html>
